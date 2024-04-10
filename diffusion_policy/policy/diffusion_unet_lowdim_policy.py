@@ -96,15 +96,15 @@ class DiffusionUnetLowdimPolicy(BaseLowdimPolicy):
         return trajectory
 
 
-    def predict_action(self, obs_dict: Dict[str, torch.Tensor]) -> Dict[str, torch.Tensor]:
+    def get_action(self, obs_seq: torch.Tensor) -> Dict[str, torch.Tensor]:
         """
         obs_dict: must include "obs" key
         result: must include "action" key
         """
 
-        assert 'obs' in obs_dict
-        assert 'past_action' not in obs_dict # not implemented yet
-        nobs = self.normalizer['obs'].normalize(obs_dict['obs'])
+        obs = torch.tensor(obs_seq).to(self.device, self.dtype)
+        obs_dict = {'obs': obs}
+        nobs = self.normalizer['obs'].normalize(obs_dict['obs']).unsqueeze(0)
         B, _, Do = nobs.shape
         To = self.n_obs_steps
         assert Do == self.obs_dim
@@ -174,7 +174,7 @@ class DiffusionUnetLowdimPolicy(BaseLowdimPolicy):
             action_obs_pred = obs_pred[:,start:end]
             result['action_obs_pred'] = action_obs_pred
             result['obs_pred'] = obs_pred
-        return result
+        return result["action_pred"][0,:,:]
 
     # ========= training  ============
     def set_normalizer(self, normalizer: LinearNormalizer):

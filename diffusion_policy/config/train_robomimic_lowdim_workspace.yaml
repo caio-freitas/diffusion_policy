@@ -1,7 +1,7 @@
 defaults:
   - _self_
-  - task: pusht_lowdim
-
+  - task: caio_lift_lowdim
+output_dir: "."
 name: train_robomimic_lowdim
 _target_: diffusion_policy.workspace.train_robomimic_lowdim_workspace.TrainRobomimicLowdimWorkspace
 
@@ -10,7 +10,8 @@ action_dim: ${task.action_dim}
 transition_dim: "${eval: ${task.obs_dim} + ${task.action_dim}}"
 task_name: ${task.name}
 exp_name: "default"
-
+render: False
+output_video: False
 horizon: 10
 n_obs_steps: 1
 n_action_steps: 1
@@ -29,21 +30,21 @@ policy:
   dataset_type: ${oc.select:task.dataset_type,ph}
 
 dataloader:
-  batch_size: 256
+  batch_size: 64
   num_workers: 1
   shuffle: True
   pin_memory: True
   persistent_workers: False
 
 val_dataloader:
-  batch_size: 256
+  batch_size: 64
   num_workers: 1
   shuffle: False
   pin_memory: True
   persistent_workers: False
 
 training:
-  device: "cuda:0"
+  device: "cpu"
   seed: 42
   debug: False
   resume: True

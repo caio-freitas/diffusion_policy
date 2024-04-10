@@ -1,16 +1,17 @@
 defaults:
   - _self_
-  - task: pusht_lowdim
-
+  - task: caio_lift_lowdim
+output_dir: "."
 name: train_diffusion_unet_lowdim
 _target_: diffusion_policy.workspace.train_diffusion_unet_lowdim_workspace.TrainDiffusionUnetLowdimWorkspace
 
 obs_dim: ${task.obs_dim}
 action_dim: ${task.action_dim}
-keypoint_dim: ${task.keypoint_dim}
+keypoint_dim: 3
 task_name: ${task.name}
 exp_name: "default"
-
+render: False
+output_video: False
 horizon: 16
 n_obs_steps: 2
 n_action_steps: 8
@@ -68,14 +69,14 @@ ema:
   max_value: 0.9999
 
 dataloader:
-  batch_size: 256
+  batch_size: 32
   num_workers: 1
   shuffle: True
   pin_memory: True
   persistent_workers: False
 
 val_dataloader:
-  batch_size: 256
+  batch_size: 32
   num_workers: 1
   shuffle: False
   pin_memory: True
@@ -89,7 +90,7 @@ optimizer:
   weight_decay: 1.0e-6
 
 training:
-  device: "cuda:0"
+  device: "cpu"
   seed: 42
   debug: False
   resume: True
