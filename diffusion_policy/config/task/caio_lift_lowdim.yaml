@@ -19,7 +19,7 @@ env_runner:
   output_dir: ${output_dir}
   action_horizon: ${horizon}
   obs_horizon: ${horizon}
-  render: True
+  render: ${render}
   output_video: ${output_video}
   env:
     _target_: imitation.env.robomimic_lowdim_wrapper.RobomimicLowdimWrapper
