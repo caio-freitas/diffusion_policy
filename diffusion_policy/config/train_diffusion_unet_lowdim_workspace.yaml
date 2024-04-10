@@ -11,13 +11,14 @@ keypoint_dim: 3
 task_name: ${task.name}
 exp_name: "default"
 render: False
-output_video: False
+output_video: True
 horizon: 16
 n_obs_steps: 2
 n_action_steps: 8
 n_latency_steps: 0
 past_action_visible: False
 keypoint_visible_rate: 1.0
+val_fraction: 0.1
 obs_as_local_cond: False
 obs_as_global_cond: True
 pred_action_steps_only: False
@@ -69,14 +70,14 @@ ema:
   max_value: 0.9999
 
 dataloader:
-  batch_size: 32
+  batch_size: 64
   num_workers: 1
   shuffle: True
   pin_memory: True
   persistent_workers: False
 
 val_dataloader:
-  batch_size: 32
+  batch_size: 64
   num_workers: 1
   shuffle: False
   pin_memory: True
