@@ -94,7 +94,7 @@ training:
   device: "cpu"
   seed: 42
   debug: False
-  resume: False
+  resume: True
   # optimization
   lr_scheduler: cosine
   lr_warmup_steps: 500
@@ -127,7 +127,7 @@ checkpoint:
     monitor_key: train_loss
     mode: min
     k: 5
-    format_str: 'epoch={epoch:04d}-test_mean_score={test_mean_score:.3f}.ckpt'
+    format_str: 'epoch={epoch:04d}-train_loss={train_loss:.3f}.ckpt'
   save_last_ckpt: True
   save_last_snapshot: False
 
