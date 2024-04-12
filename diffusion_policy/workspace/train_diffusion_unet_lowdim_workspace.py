@@ -217,11 +217,13 @@ class TrainDiffusionUnetLowdimWorkspace(BaseWorkspace):
                 # run rollout
                 if (self.epoch % cfg.training.rollout_every) == 0:
                     success_count = 0
-                    for _ in range(cfg.training.rollout_episodes):
+                    for i in range(cfg.training.rollout_episodes):
                         rewards, info = env_runner.run(policy)
                         if info["success"]:
                             success_count += 1
                         wandb_run.log({"episode_reward": sum(rewards), "success": 1 if info["success"] else 0})
+                        if i >= 1:
+                            env_runner.output_video = False
                     step_log.update(
                         {
                             "success_rate": success_count / cfg.training.rollout_episodes,
