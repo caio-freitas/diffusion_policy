@@ -125,11 +125,6 @@ class TrainDiffusionUnetLowdimWorkspace(BaseWorkspace):
             config=OmegaConf.to_container(cfg, resolve=True),
             **cfg.logging
         )
-        # wandb.config.update(
-        #     {
-        #         "output_dir": self.output_dir,
-        #     }
-        # )
 
         # configure checkpoint
         topk_manager = TopKCheckpointManager(
@@ -221,9 +216,19 @@ class TrainDiffusionUnetLowdimWorkspace(BaseWorkspace):
 
                 # run rollout
                 if (self.epoch % cfg.training.rollout_every) == 0:
-                    runner_log = env_runner.run(policy)
+                    success_count = 0
+                    for _ in range(cfg.training.rollout_episodes):
+                        rewards, info = env_runner.run(policy)
+                        if info["success"]:
+                            success_count += 1
+                        wandb_run.log({"episode_reward": sum(rewards), "success": 1 if info["success"] else 0})
+                    step_log.update(
+                        {
+                            "success_rate": success_count / cfg.training.rollout_episodes,
+                        }
+                    )
                     # log all
-                    step_log.update(runner_log[1]) # "info"
+                    step_log.update(info)
 
                 # run validation
                 if (self.epoch % cfg.training.val_every) == 0:

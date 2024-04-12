@@ -104,6 +104,7 @@ training:
   # training loop control
   # in epochs
   rollout_every: 50
+  rollout_episodes: 5
   checkpoint_every: 1
   val_every: 1
   sample_every: 5
