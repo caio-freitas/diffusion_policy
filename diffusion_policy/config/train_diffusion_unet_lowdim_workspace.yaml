@@ -105,6 +105,7 @@ training:
   # in epochs
   rollout_every: 50
   rollout_episodes: 50
+  max_steps: ${task.max_steps}
   checkpoint_every: 1
   val_every: 1
   sample_every: 5

@@ -218,7 +218,7 @@ class TrainDiffusionUnetLowdimWorkspace(BaseWorkspace):
                 if (self.epoch % cfg.training.rollout_every) == 0:
                     success_count = 0
                     for i in range(cfg.training.rollout_episodes):
-                        rewards, info = env_runner.run(policy)
+                        rewards, info = env_runner.run(policy, cfg.training.max_steps)
                         if info["success"]:
                             success_count += 1
                         # step_log.update({"episode_reward": sum(rewards), "success": 1 if info["success"] else 0})
