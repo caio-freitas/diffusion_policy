@@ -9,11 +9,11 @@ obs_dim: 77
 action_dim: 18
 
 
-obs_keys: &obs_keys ['robot0_joint_vel',
+obs_keys: &obs_keys ['robot0_joint_pos',
                     'robot0_eef_pos',
                     'robot0_eef_quat',
                     'robot0_gripper_qpos',
-                    'robot1_joint_vel',
+                    'robot1_joint_pos',
                     'robot1_eef_pos',
                     'robot1_eef_quat',
                     'robot1_gripper_qpos',
