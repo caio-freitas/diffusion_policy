@@ -174,7 +174,7 @@ class DiffusionUnetLowdimPolicy(BaseLowdimPolicy):
             action_obs_pred = obs_pred[:,start:end]
             result['action_obs_pred'] = action_obs_pred
             result['obs_pred'] = obs_pred
-        return np.array(result["action_pred"][0,:,:])
+        return result["action_pred"][0,:,:].detach().cpu().numpy()
 
     # ========= training  ============
     def set_normalizer(self, normalizer: LinearNormalizer):

@@ -221,7 +221,7 @@ class TrainDiffusionUnetLowdimWorkspace(BaseWorkspace):
                         rewards, info = env_runner.run(policy)
                         if info["success"]:
                             success_count += 1
-                        wandb_run.log({"episode_reward": sum(rewards), "success": 1 if info["success"] else 0})
+                        # step_log.update({"episode_reward": sum(rewards), "success": 1 if info["success"] else 0})
                         if i >= 1:
                             env_runner.output_video = False
                     step_log.update(
