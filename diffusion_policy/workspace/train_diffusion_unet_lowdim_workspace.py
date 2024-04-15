@@ -224,11 +224,7 @@ class TrainDiffusionUnetLowdimWorkspace(BaseWorkspace):
                         # step_log.update({"episode_reward": sum(rewards), "success": 1 if info["success"] else 0})
                         if i >= 1:
                             env_runner.output_video = False
-                    step_log.update(
-                        {
-                            "success_rate": success_count / cfg.training.rollout_episodes,
-                        }
-                    )
+                    wandb_run.log({"success_rate": success_count / cfg.training.rollout_episodes})
                     # log all
                     step_log.update(info)
                     env_runner.output_video = True # re-enable video output 
