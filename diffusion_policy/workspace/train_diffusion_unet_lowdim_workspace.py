@@ -231,6 +231,7 @@ class TrainDiffusionUnetLowdimWorkspace(BaseWorkspace):
                     )
                     # log all
                     step_log.update(info)
+                    env_runner.output_video = True # re-enable video output 
 
                 # run validation
                 if (self.epoch % cfg.training.val_every) == 0:
@@ -269,10 +270,15 @@ class TrainDiffusionUnetLowdimWorkspace(BaseWorkspace):
                 #         mse = torch.nn.functional.mse_loss(pred_action, gt_action)
                 #         # log
                 #         step_log['train_action_mse_error'] = mse.item()
+                #         # release RAM
+                #         del batch
+                #         del obs_dict
+                #         del gt_action
+                #         del result
+                #         del pred_action
+                #         del mse
                 
-                # release RAM
                 del batch
-                
                 # checkpoint
                 if (self.epoch % cfg.training.checkpoint_every) == 0:
                     # checkpointing
