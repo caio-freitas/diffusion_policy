@@ -35,3 +35,5 @@ dataset:
   pred_horizon: ${horizon}
   action_horizon: ${n_action_steps}
   obs_horizon: ${n_obs_steps}
+
+ckpt_path: ./data/square/best_ph.ckpt
