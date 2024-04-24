@@ -104,7 +104,9 @@ class DiffusionUnetLowdimPolicy(BaseLowdimPolicy):
 
         obs = torch.tensor(obs_seq).to(self.device, self.dtype)
         obs_dict = {'obs': obs}
-        nobs = self.normalizer['obs'].normalize(obs_dict['obs']).unsqueeze(0)
+        nobs = self.normalizer['obs'].normalize(obs_dict['obs'])
+        if len(nobs.shape) == 2:
+            nobs = nobs.unsqueeze(0)
         B, _, Do = nobs.shape
         To = self.n_obs_steps
         assert Do == self.obs_dim
