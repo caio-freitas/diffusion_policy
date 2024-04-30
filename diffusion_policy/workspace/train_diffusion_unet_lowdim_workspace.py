@@ -201,8 +201,10 @@ class TrainDiffusionUnetLowdimWorkspace(BaseWorkspace):
 
                         if (cfg.training.max_train_steps is not None) \
                             and batch_idx >= (cfg.training.max_train_steps-1):
+                            del batch
                             break
-                
+                        
+                        
                 # at the end of each epoch
                 # replace train_loss with epoch average
                 train_loss = np.mean(train_losses)
@@ -242,6 +244,7 @@ class TrainDiffusionUnetLowdimWorkspace(BaseWorkspace):
                                 if (cfg.training.max_val_steps is not None) \
                                     and batch_idx >= (cfg.training.max_val_steps-1):
                                     break
+                                del batch
                         if len(val_losses) > 0:
                             val_loss = torch.mean(torch.tensor(val_losses)).item()
                             # log epoch average validation loss
@@ -274,7 +277,6 @@ class TrainDiffusionUnetLowdimWorkspace(BaseWorkspace):
                 #         del pred_action
                 #         del mse
                 
-                del batch
                 # checkpoint
                 if (self.epoch % cfg.training.checkpoint_every) == 0:
                     # checkpointing
