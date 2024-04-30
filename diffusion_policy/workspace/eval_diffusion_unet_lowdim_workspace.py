@@ -189,13 +189,25 @@ class EvalDiffusionUnetLowdimWorkspace(BaseWorkspace):
                 columns=["waypoint_variance", "mean_waypoint_variance", "smoothness", "mean_error", "std_error", "mean_execution_time", "std_execution_time"]
             )], ignore_index=True)
 
+        # compute the mean and std of the error for all the samples
+        delta_traj = np.array(delta_traj)
+        mean_squared_error = np.mean(np.square(delta_traj))
+        std_error = np.std(np.mean(delta_traj, axis=1), axis=0).mean()
+        print(f"Mean error: {mean_error}")
+        print(f"Mean squared error: {mean_squared_error}")
+        print(f"Std error: {std_error}")
+        wandb.log({"final_mean_error": mean_error, "final_mean_squared_error": mean_squared_error, "final_std_error": std_error, "final_mean_execution_time": np.array(times).mean(), "final_std_execution_time": np.array(times).std()})
+        metrics.to_csv(f"./outputs/traj_eval_{policy.__class__.__name__}_{cfg.task.ckpt_path.split('/')[-1]}.csv")
+
+
+
 
 @hydra.main(
     version_base=None,
     config_path=str(pathlib.Path(__file__).parent.parent.joinpath("config")), 
     config_name=pathlib.Path(__file__).stem)
 def main(cfg):
-    workspace = TrainDiffusionUnetLowdimWorkspace(cfg)
+    workspace = EvalDiffusionUnetLowdimWorkspace(cfg)
     workspace.run()
 
 if __name__ == "__main__":

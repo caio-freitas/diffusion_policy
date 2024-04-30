@@ -126,22 +126,22 @@ logging:
 
 checkpoint:
   topk:
-    monitor_key: train_loss
-    mode: min
+    monitor_key: success_rate
+    mode: max
     k: 5
-    format_str: 'epoch={epoch:04d}-train_loss={train_loss:.3f}.ckpt'
+    format_str: 'epoch={epoch:04d}-success_rate={success_rate:.3f}.ckpt'
   save_last_ckpt: True
   save_last_snapshot: False
 
 multi_run:
-  run_dir: data/outputs/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}_${task_name}
+  run_dir: data/outputs/${task.task_name}_${task.dataset_type}/
   wandb_name_base: ${now:%Y.%m.%d-%H.%M.%S}_${name}_${task_name}
 
 hydra:
   job:
     override_dirname: ${name}
   run:
-    dir: data/outputs/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}_${task_name}
+    dir: data/outputs/${task.task_name}_${task.dataset_type}/
   sweep:
-    dir: data/outputs/${now:%Y.%m.%d}/${now:%H.%M.%S}_${name}_${task_name}
+    dir: data/outputs/${task.task_name}_${task.dataset_type}/
     subdir: ${hydra.job.num}

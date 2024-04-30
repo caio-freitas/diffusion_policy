@@ -24,8 +24,8 @@ obs_as_global_cond: True
 pred_action_steps_only: False
 
 ## for evaluation
-num_episodes: 10
-num_seeds: 5
+num_episodes: 50
+num_seeds: 10
 
 
 policy:
@@ -118,7 +118,7 @@ logging:
   project: diffusion_policy_debug
   resume: False
   mode: online
-  name: ${now:%Y.%m.%d-%H.%M.%S}_${name}_${task_name}
+  name: ${now:%Y.%m.%d-%H.%M.%S}_${name}_${task_name}_${task.dataset_type}
   tags: ["${name}", "${task_name}", "${exp_name}"]
   id: null
   group: null
